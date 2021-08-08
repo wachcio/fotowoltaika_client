@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { createContext } from 'react';
 import { useStateWithLabel } from '../helpers/helpers';
 
@@ -31,6 +33,9 @@ const StoreProvider = (props) => {
     // Router links
     const routerLinks = [{ name: 'start', path: '/', exact: true }];
 
+    // PV data
+    const [dayEnergy, setDayEnergy] = useStateWithLabel('dayEnergy', null);
+
     const showMessage = (text, isAlert) => {
         setMessageText(text);
         setIsMessageAlert(isAlert);
@@ -54,6 +59,8 @@ const StoreProvider = (props) => {
                 routerLinks,
                 setIsOpenMenu,
                 isOpenMenu,
+                dayEnergy,
+                setDayEnergy,
             }}
         >
             {isVisibleMessage ? <Message message={messageText} alert={isMessageAlert} /> : ''}

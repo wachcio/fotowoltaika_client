@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { useState, useDebugValue } from 'react';
 
 export const useStateWithLabel = (name, initialValue) => {

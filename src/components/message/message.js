@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './Message.module.scss';
+import styles from './message.module.scss';
 
 const Message = ({ message, alert }) => (
     <div className={`${styles.message} ${!alert ? '' : styles.messageAlert}`}>

@@ -4,11 +4,14 @@ import './SCSS/index.scss';
 import App from './App';
 import Spiner from './components/spinner/spinner';
 import reportWebVitals from './reportWebVitals';
+import StoreProvider from './store/storeProvider';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Spiner />
-        <App />
+        <StoreProvider>
+            <Spiner />
+            <App />
+        </StoreProvider>
     </React.StrictMode>,
     document.getElementById('root'),
 );
