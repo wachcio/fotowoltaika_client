@@ -39,6 +39,10 @@ const StoreProvider = (props) => {
         null,
     );
     const [PPPInverterData, setPPPInverterData] = useStateWithLabel('PPPInverterData', null);
+    const [minMaxInverterData, setMinMaxInverterData] = useStateWithLabel(
+        'minMaxInverterData',
+        null,
+    );
 
     const showMessage = (text, isAlert) => {
         setMessageText(text);
@@ -67,6 +71,8 @@ const StoreProvider = (props) => {
                 setCommonInverterData,
                 PPPInverterData,
                 setPPPInverterData,
+                minMaxInverterData,
+                setMinMaxInverterData,
             }}
         >
             {isVisibleMessage ? <Message message={messageText} alert={isMessageAlert} /> : ''}

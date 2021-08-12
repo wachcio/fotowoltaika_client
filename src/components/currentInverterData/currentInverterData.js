@@ -4,19 +4,19 @@ import { getInverterRealtimeDataCID, getInverterRealtimeData3PID } from '../../h
 import { StoreContext } from '../../store/storeProvider';
 // import styles from './commonInverterData.module.scss'
 
-function currentInverterData() {
+function CurrentInverterData() {
     const { commonInverterData, setCommonInverterData } = useContext(StoreContext);
     const { PPPInverterData, setPPPInverterData } = useContext(StoreContext);
 
     const yearEnergyKWH =
         !commonInverterData?.Body?.Data?.TOTAL_ENERGY?.Value ||
         Number.isNaN(commonInverterData?.Body?.Data?.TOTAL_ENERGY?.Value)
-            ? ''
+            ? '0W'
             : `${(commonInverterData?.Body?.Data?.TOTAL_ENERGY?.Value / 1000).toFixed(2)}kWh`;
     const dayEnergyKWH =
         !commonInverterData?.Body?.Data?.DAY_ENERGY?.Value ||
         Number.isNaN(commonInverterData?.Body?.Data?.DAY_ENERGY?.Value)
-            ? ''
+            ? '0W'
             : `${(commonInverterData?.Body?.Data?.DAY_ENERGY?.Value / 1000).toFixed(2)}kWh`;
     const currentProduction =
         !commonInverterData?.Body?.Data?.PAC?.Value ||
@@ -96,4 +96,4 @@ function currentInverterData() {
     );
 }
 
-export default currentInverterData;
+export default CurrentInverterData;
