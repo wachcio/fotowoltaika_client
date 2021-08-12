@@ -34,10 +34,11 @@ const StoreProvider = (props) => {
     const routerLinks = [{ name: 'start', path: '/', exact: true }];
 
     // PV data
-    const [currentInverterData, setcurrentInverterData] = useStateWithLabel(
-        'currentInverterData',
+    const [commonInverterData, setCommonInverterData] = useStateWithLabel(
+        'commonInverterData',
         null,
     );
+    const [PPPInverterData, setPPPInverterData] = useStateWithLabel('PPPInverterData', null);
 
     const showMessage = (text, isAlert) => {
         setMessageText(text);
@@ -62,8 +63,10 @@ const StoreProvider = (props) => {
                 routerLinks,
                 setIsOpenMenu,
                 isOpenMenu,
-                currentInverterData,
-                setcurrentInverterData,
+                commonInverterData,
+                setCommonInverterData,
+                PPPInverterData,
+                setPPPInverterData,
             }}
         >
             {isVisibleMessage ? <Message message={messageText} alert={isMessageAlert} /> : ''}
