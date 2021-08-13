@@ -1,63 +1,56 @@
-import { useEffect, useContext } from 'react';
-import { getMinMaxInverterData } from '../../helpers/getData';
+import { useContext } from 'react';
+import { convertDataFromFroniusAPI } from '../../helpers/convertDataFromFroniusAPI';
 import { StoreContext } from '../../store/storeProvider';
 // import styles from './minMaxInverterData.module.scss'
 
 function MinMaxInverterData() {
-    const { minMaxInverterData, setMinMaxInverterData } = useContext(StoreContext);
+    const { minMaxInverterData } = useContext(StoreContext);
 
-    const DAY_PMAX =
-        !minMaxInverterData?.Body?.Data?.DAY_PMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.DAY_PMAX?.Value)
-            ? '0W'
-            : `${(minMaxInverterData?.Body?.Data?.DAY_PMAX?.Value).toFixed(2)}Wh`;
-    const YEAR_PMAX =
-        !minMaxInverterData?.Body?.Data?.YEAR_PMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.YEAR_PMAX?.Value)
-            ? '0W'
-            : `${(minMaxInverterData?.Body?.Data?.YEAR_PMAX?.Value).toFixed(2)}Wh`;
-    const TOTAL_PMAX =
-        !minMaxInverterData?.Body?.Data?.TOTAL_PMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.TOTAL_PMAX?.Value)
-            ? '0W'
-            : `${(minMaxInverterData?.Body?.Data?.TOTAL_PMAX?.Value).toFixed(2)}Wh`;
-    const DAY_UACMAX =
-        !minMaxInverterData?.Body?.Data?.DAY_UACMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.DAY_UACMAX?.Value)
-            ? '0V'
-            : `${(minMaxInverterData?.Body?.Data?.DAY_UACMAX?.Value).toFixed(2)}V`;
-    const YEAR_UACMAX =
-        !minMaxInverterData?.Body?.Data?.YEAR_UACMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.YEAR_UACMAX?.Value)
-            ? '0V'
-            : `${(minMaxInverterData?.Body?.Data?.YEAR_UACMAX?.Value).toFixed(2)}V`;
-    const TOTAL_UACMAX =
-        !minMaxInverterData?.Body?.Data?.TOTAL_UACMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.TOTAL_UACMAX?.Value)
-            ? '0V'
-            : `${(minMaxInverterData?.Body?.Data?.TOTAL_UACMAX?.Value).toFixed(2)}V`;
-    const DAY_UDCMAX =
-        !minMaxInverterData?.Body?.Data?.DAY_UDCMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.DAY_UDCMAX?.Value)
-            ? '0V'
-            : `${(minMaxInverterData?.Body?.Data?.DAY_UDCMAX?.Value).toFixed(2)}V`;
-    const YEAR_UDCMAX =
-        !minMaxInverterData?.Body?.Data?.YEAR_UDCMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.YEAR_UDCMAX?.Value)
-            ? '0V'
-            : `${(minMaxInverterData?.Body?.Data?.YEAR_UDCMAX?.Value).toFixed(2)}V`;
-    const TOTAL_UDCMAX =
-        !minMaxInverterData?.Body?.Data?.TOTAL_UDCMAX?.Value ||
-        Number.isNaN(minMaxInverterData?.Body?.Data?.TOTAL_UDCMAX?.Value)
-            ? '0V'
-            : `${(minMaxInverterData?.Body?.Data?.TOTAL_UDCMAX?.Value).toFixed(2)}V`;
-
-    useEffect(async () => {
-        setMinMaxInverterData(await getMinMaxInverterData());
-        return setInterval(async () => {
-            setMinMaxInverterData(await getMinMaxInverterData());
-        }, process.env.REACT_APP_UPDATE_DATA_TIME || 30000);
-    }, []);
+    const DAY_PMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.DAY_PMAX?.Value,
+        minMaxInverterData?.Body?.Data?.DAY_PMAX?.Unit,
+        2,
+    );
+    const YEAR_PMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.YEAR_PMAX?.Value,
+        minMaxInverterData?.Body?.Data?.YEAR_PMAX?.Unit,
+        2,
+    );
+    const TOTAL_PMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.TOTAL_PMAX?.Value,
+        minMaxInverterData?.Body?.Data?.TOTAL_PMAX?.Unit,
+        2,
+    );
+    const DAY_UACMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.DAY_UACMAX?.Value,
+        minMaxInverterData?.Body?.Data?.DAY_UACMAX?.Unit,
+        2,
+    );
+    const YEAR_UACMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.YEAR_UACMAX?.Value,
+        minMaxInverterData?.Body?.Data?.YEAR_UACMAX?.Unit,
+        2,
+    );
+    const TOTAL_UACMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.TOTAL_UACMAX?.Value,
+        minMaxInverterData?.Body?.Data?.TOTAL_UACMAX?.Unit,
+        2,
+    );
+    const DAY_UDCMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.DAY_UDCMAX?.Value,
+        minMaxInverterData?.Body?.Data?.DAY_UDCMAX?.Unit,
+        2,
+    );
+    const YEAR_UDCMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.YEAR_UDCMAX?.Value,
+        minMaxInverterData?.Body?.Data?.YEAR_UDCMAX?.Unit,
+        2,
+    );
+    const TOTAL_UDCMAX = convertDataFromFroniusAPI(
+        minMaxInverterData?.Body?.Data?.TOTAL_UDCMAX?.Value,
+        minMaxInverterData?.Body?.Data?.TOTAL_UDCMAX?.Unit,
+        2,
+    );
 
     return (
         <div className="minMaxInverterData">
