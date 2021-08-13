@@ -56,7 +56,7 @@ function MinMaxInverterData() {
         setMinMaxInverterData(await getMinMaxInverterData());
         return setInterval(async () => {
             setMinMaxInverterData(await getMinMaxInverterData());
-        }, 15000);
+        }, process.env.REACT_APP_UPDATE_DATA_TIME || 30000);
     }, []);
 
     return (

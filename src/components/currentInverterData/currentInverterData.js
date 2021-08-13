@@ -75,7 +75,7 @@ function CurrentInverterData() {
         return setInterval(async () => {
             setCommonInverterData(await getInverterRealtimeDataCID());
             setPPPInverterData(await getInverterRealtimeData3PID());
-        }, 15000);
+        }, process.env.REACT_APP_UPDATE_DATA_TIME || 30000);
     }, []);
 
     return (
