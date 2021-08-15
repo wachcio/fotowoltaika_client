@@ -46,12 +46,12 @@ const UpdateAllData = () => {
         setPPPInverterData(await getInverterRealtimeData3PID());
         setMinMaxInverterData(await getMinMaxInverterData());
         setStringsCurrentData(await getStringsCurrentData());
-        return setInterval(async () => {
-            setCommonInverterData(await getInverterRealtimeDataCID());
-            setPPPInverterData(await getInverterRealtimeData3PID());
-            setMinMaxInverterData(await getMinMaxInverterData());
-            setStringsCurrentData(await getStringsCurrentData());
-        }, process.env.REACT_APP_UPDATE_DATA_TIME || 30000);
+        // return setInterval(async () => {
+        //     setCommonInverterData(await getInverterRealtimeDataCID());
+        //     setPPPInverterData(await getInverterRealtimeData3PID());
+        //     setMinMaxInverterData(await getMinMaxInverterData());
+        //     setStringsCurrentData(await getStringsCurrentData());
+        // }, process.env.REACT_APP_UPDATE_DATA_TIME || 30000);
     }, []);
     return null;
 };
