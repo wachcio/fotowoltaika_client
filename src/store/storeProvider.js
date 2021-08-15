@@ -44,9 +44,10 @@ const StoreProvider = (props) => {
         null,
     );
     const [stringsCurrentData, setStringsCurrentData] = useStateWithLabel(
-        'minMaxInverterData',
+        'stringsCurrentData',
         null,
     );
+    const [dayDetails, setDayDetails] = useStateWithLabel('dayDetails', null);
 
     const showMessage = (text, isAlert) => {
         setMessageText(text);
@@ -79,6 +80,8 @@ const StoreProvider = (props) => {
                 setMinMaxInverterData,
                 stringsCurrentData,
                 setStringsCurrentData,
+                dayDetails,
+                setDayDetails,
             }}
         >
             {isVisibleMessage ? <Message message={messageText} alert={isMessageAlert} /> : ''}

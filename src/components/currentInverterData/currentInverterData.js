@@ -113,7 +113,7 @@ function CurrentInverterData() {
             : `${stringsCurrentData?.Temperature_Powerstage.toFixed(2)}°C`;
 
     return (
-        <div className="commonInverterData">
+        <div className="currentInverterData">
             <p>Produkcja aktualna: {currentProduction}</p>
             <p>Produkcja dziś: {dayEnergyKWH}</p>
             <p>Produkcja łącznie: {totalEnergyKWH}</p>
