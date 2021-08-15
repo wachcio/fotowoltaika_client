@@ -1,33 +1,47 @@
-import React, { useContext, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+    Line,
+    LineChart,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from 'recharts';
 import { StoreContext } from '../../store/storeProvider';
 
 function Charts() {
     const { dayDetails } = useContext(StoreContext);
-    const data = [];
+    const [data, setData] = useState(0);
 
     useEffect(() => {
         if (dayDetails) {
+            const arr = [];
             dayDetails.map((el) =>
-                data.push({
+                arr.push({
                     name: 'PowerReal_PAC_Sum',
                     Produkcja: el.PowerReal_PAC_Sum,
+                    Timestamp: el.timestamp,
                 }),
             );
             console.log('data', data);
+            setData(arr);
         }
     }, [dayDetails]);
 
     return (
         <>
-            <BarChart width={730} height={250} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Produkcja" fill="#82ca9d" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height={500}>
+                <LineChart data={data}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="Produkcja" stroke="#82ca9d" />
+                </LineChart>
+            </ResponsiveContainer>
         </>
     );
 }
