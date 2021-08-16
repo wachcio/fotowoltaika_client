@@ -52,11 +52,11 @@ const UpdateAllData = () => {
             .then(({ data }) => data);
 
     useEffect(async () => {
+        setDayDetails(await getDayDetails(2021, 8, 14));
         setCommonInverterData(await getInverterRealtimeDataCID());
         setPPPInverterData(await getInverterRealtimeData3PID());
         setMinMaxInverterData(await getMinMaxInverterData());
         setStringsCurrentData(await getStringsCurrentData());
-        setDayDetails(await getDayDetails(2021, 8, 15));
 
         // return setInterval(async () => {
         //     setCommonInverterData(await getInverterRealtimeDataCID());

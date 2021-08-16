@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    Line,
-    LineChart,
+    // Line,
+    AreaChart,
+    Area,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -9,6 +11,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
 
 function Charts() {
@@ -30,17 +33,33 @@ function Charts() {
         }
     }, [dayDetails]);
 
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip">
+                    {' '}
+                    <p className="label">
+                        {`${dayjs(payload[0].payload.Timestamp).format('HH:mm')}`}
+                    </p>
+                    <p className="label">{`Produkcja: ${payload[0].value}W`}</p>
+                </div>
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
             <ResponsiveContainer width="100%" height={500}>
-                <LineChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                <AreaChart data={data}>
+                    <CartesianGrid strokeDasharray="0 3 " />
+                    <XAxis dataKey="data.timestamp" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     <Legend />
-                    <Line type="monotone" dataKey="Produkcja" stroke="#82ca9d" />
-                </LineChart>
+                    <Area type="monotone" dataKey="Produkcja" stroke="#ffd238" fill="#ffd238" />
+                </AreaChart>
             </ResponsiveContainer>
         </>
     );
