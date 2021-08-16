@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
+import styles from './charts.module.scss';
 
 function Charts() {
     const { dayDetails } = useContext(StoreContext);
@@ -36,7 +37,7 @@ function Charts() {
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             return (
-                <div className="custom-tooltip">
+                <div className={styles.customTooltip}>
                     {' '}
                     <p className="label">
                         {`${dayjs(payload[0].payload.Timestamp).format('HH:mm')}`}
@@ -71,11 +72,18 @@ function Charts() {
                             position: 'insideTopLeft',
                             offset: 15,
                         }}
+                        className={styles.customTooltip}
                     />
                     <YAxis />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
-                    <Area type="monotone" dataKey="Produkcja" stroke="#ffd238" fill="#ffd238" />
+                    <Area
+                        type="monotone"
+                        dataKey="Produkcja"
+                        stroke="#ffd238"
+                        fill="#ffd238"
+                        fillOpacity={1}
+                    />
                 </AreaChart>
             </ResponsiveContainer>
         </>

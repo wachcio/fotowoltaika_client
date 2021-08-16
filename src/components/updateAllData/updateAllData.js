@@ -52,7 +52,7 @@ const UpdateAllData = () => {
             .then(({ data }) => data);
 
     useEffect(async () => {
-        setDayDetails(await getDayDetails(2021, 8, 14));
+        setDayDetails(await getDayDetails(2021, 8, 15));
         setCommonInverterData(await getInverterRealtimeDataCID());
         setPPPInverterData(await getInverterRealtimeData3PID());
         setMinMaxInverterData(await getMinMaxInverterData());
