@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    // Line,
+    // Label,
     AreaChart,
     Area,
     XAxis,
@@ -52,9 +52,26 @@ function Charts() {
     return (
         <>
             <ResponsiveContainer width="100%" height={500}>
-                <AreaChart data={data}>
+                <AreaChart
+                    data={data}
+                    margin={{
+                        top: 20,
+                        right: 80,
+                        bottom: 20,
+                        left: 20,
+                    }}
+                >
                     <CartesianGrid strokeDasharray="0 3 " />
-                    <XAxis dataKey="data.timestamp" />
+                    <XAxis
+                        dataKey="data.timestamp"
+                        label={{
+                            value: dayDetails
+                                ? `${dayjs(dayDetails[0].timestamp).format('YYYY-MM-DD')}`
+                                : '',
+                            position: 'insideTopLeft',
+                            offset: 15,
+                        }}
+                    />
                     <YAxis />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
