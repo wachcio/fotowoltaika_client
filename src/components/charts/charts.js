@@ -78,7 +78,7 @@ function Charts() {
                             offset: 15,
                         }}
                     />
-                    <YAxis />
+                    <YAxis domain={[0, 10000]} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Area
