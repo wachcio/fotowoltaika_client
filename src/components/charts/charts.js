@@ -16,23 +16,28 @@ import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
 
 function Charts() {
-    const { dayDetails } = useContext(StoreContext);
-    const [data, setData] = useState(0);
+    const { todayPowerRealPACSum } = useContext(StoreContext);
+    const [data, setData] = useState([]);
 
-    useEffect(() => {
-        if (dayDetails) {
-            const arr = [];
-            dayDetails.map((el) =>
-                arr.push({
-                    name: 'PowerReal_PAC_Sum',
-                    Produkcja: el.PowerReal_PAC_Sum,
-                    Timestamp: el.timestamp,
-                }),
+    useEffect(async () => {
+        if (todayPowerRealPACSum) {
+            // const arr = [];
+            setData([]);
+            await todayPowerRealPACSum.map((el) =>
+                setData((prev) => [
+                    ...prev,
+                    {
+                        name: 'PowerReal_PAC_Sum',
+                        Produkcja: el.PowerReal_PAC_Sum,
+                        Timestamp: el.Timestamp,
+                    },
+                ]),
             );
+            // console.log('arr', arr);
+            // await setData(arr);
             console.log('data', data);
-            setData(arr);
         }
-    }, [dayDetails]);
+    }, [todayPowerRealPACSum]);
 
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
@@ -52,7 +57,7 @@ function Charts() {
 
     return (
         <>
-            <ResponsiveContainer width="100%" height={500}>
+            <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
                 <AreaChart
                     data={data}
                     margin={{
@@ -66,13 +71,12 @@ function Charts() {
                     <XAxis
                         dataKey="data.timestamp"
                         label={{
-                            value: dayDetails
-                                ? `${dayjs(dayDetails[0].timestamp).format('YYYY-MM-DD')}`
+                            value: todayPowerRealPACSum
+                                ? `${dayjs(todayPowerRealPACSum[0].timestamp).format('YYYY-MM-DD')}`
                                 : '',
                             position: 'insideTopLeft',
                             offset: 15,
                         }}
-                        className={styles.customTooltip}
                     />
                     <YAxis />
                     <Tooltip content={<CustomTooltip />} />

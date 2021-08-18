@@ -48,6 +48,10 @@ const StoreProvider = (props) => {
         null,
     );
     const [dayDetails, setDayDetails] = useStateWithLabel('dayDetails', null);
+    const [todayPowerRealPACSum, setTodayPowerRealPACSum] = useStateWithLabel(
+        'todayPowerRealPACSum',
+        null,
+    );
 
     const showMessage = (text, isAlert) => {
         setMessageText(text);
@@ -82,6 +86,8 @@ const StoreProvider = (props) => {
                 setStringsCurrentData,
                 dayDetails,
                 setDayDetails,
+                todayPowerRealPACSum,
+                setTodayPowerRealPACSum,
             }}
         >
             {isVisibleMessage ? <Message message={messageText} alert={isMessageAlert} /> : ''}
