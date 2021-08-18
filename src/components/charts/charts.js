@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
     // Label,
     AreaChart,
@@ -14,16 +14,23 @@ import {
 import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
+import { useStateWithLabel } from '../../helpers/helpers';
 
 function Charts() {
     const { todayPowerRealPACSum } = useContext(StoreContext);
-    const [data, setData] = useState([]);
+    const [data, setData] = useStateWithLabel('data', []);
+    const [biggestTodayPAC, setBiggestTodayPAC] = useStateWithLabel('biggestTodayPAC', 0);
 
     useEffect(async () => {
         if (todayPowerRealPACSum) {
             // const arr = [];
             setData([]);
-            await todayPowerRealPACSum.map((el) =>
+            await todayPowerRealPACSum.map(async (el) =>
+                // console.log(Number(el.PowerReal_PAC_Sum) > Number(biggestTodayPAC));
+                // if (Number(el.PowerReal_PAC_Sum) > Number(biggestTodayPAC)) {
+                //     // console.log(el);
+                //     await setBiggestTodayPAC(el.PowerReal_PAC_Sum);
+                // }
                 setData((prev) => [
                     ...prev,
                     {
@@ -33,9 +40,9 @@ function Charts() {
                     },
                 ]),
             );
-            // console.log('arr', arr);
-            // await setData(arr);
-            console.log('data', data);
+            setBiggestTodayPAC(
+                todayPowerRealPACSum.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
+            );
         }
     }, [todayPowerRealPACSum]);
 
@@ -72,13 +79,13 @@ function Charts() {
                         dataKey="data.timestamp"
                         label={{
                             value: todayPowerRealPACSum
-                                ? `${dayjs(todayPowerRealPACSum[0].timestamp).format('YYYY-MM-DD')}`
+                                ? `${dayjs(todayPowerRealPACSum[0].Timestamp).format('YYYY-MM-DD')}`
                                 : '',
                             position: 'insideTopLeft',
                             offset: 15,
                         }}
                     />
-                    <YAxis domain={[0, 10000]} />
+                    <YAxis domain={[0, Math.ceil(biggestTodayPAC / 100) * 100 + 200]} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Area
