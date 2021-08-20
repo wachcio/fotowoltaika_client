@@ -17,15 +17,15 @@ import styles from './charts.module.scss';
 import { useStateWithLabel } from '../../helpers/helpers';
 
 function Charts() {
-    const { dayDetails } = useContext(StoreContext);
+    const { todayPowerRealPACSum } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
-    const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
+    const [biggestTodayPAC, setBiggestTodayPAC] = useStateWithLabel('biggestTodayPAC', 0);
 
     useEffect(async () => {
-        if (dayDetails) {
+        if (todayPowerRealPACSum) {
             // const arr = [];
             setData([]);
-            await dayDetails.map(async (el) =>
+            await todayPowerRealPACSum.map(async (el) =>
                 setData((prev) => [
                     ...prev,
                     {
@@ -35,11 +35,11 @@ function Charts() {
                     },
                 ]),
             );
-            setBiggestDayPAC(
-                dayDetails.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
+            setBiggestTodayPAC(
+                todayPowerRealPACSum.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
             );
         }
-    }, [dayDetails]);
+    }, [todayPowerRealPACSum]);
 
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
@@ -47,7 +47,7 @@ function Charts() {
                 <div className={styles.customTooltip}>
                     {' '}
                     <p className="label">
-                        {`${dayjs(payload[0].payload.timestamp).format('HH:mm')}`}
+                        {`${dayjs(payload[0].payload.Timestamp).format('HH:mm')}`}
                     </p>
                     <p className="label">{`Produkcja: ${payload[0].value}W`}</p>
                 </div>
@@ -73,15 +73,15 @@ function Charts() {
                     <XAxis
                         dataKey="data.timestamp"
                         label={{
-                            value: dayDetails
-                                ? `${dayjs(dayDetails[0].timestamp).format('YYYY-MM-DD')}`
+                            value: todayPowerRealPACSum
+                                ? `${dayjs(todayPowerRealPACSum[0].Timestamp).format('YYYY-MM-DD')}`
                                 : '',
                             position: 'insideTopLeft',
                             offset: 15,
                             fill: '#666',
                         }}
                     />
-                    <YAxis domain={[0, Math.ceil(biggestDayPAC / 100) * 100 + 200]} />
+                    <YAxis domain={[0, Math.ceil(biggestTodayPAC / 100) * 100 + 200]} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Area

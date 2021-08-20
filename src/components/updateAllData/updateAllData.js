@@ -8,8 +8,8 @@ const UpdateAllData = () => {
         setPPPInverterData,
         setStringsCurrentData,
         setMinMaxInverterData,
-        // setDayDetails,
-        setTodayPowerRealPACSum,
+        setDayDetails,
+        // setTodayPowerRealPACSum,
     } = useContext(StoreContext);
 
     const getInverterRealtimeDataCID = async () =>
@@ -43,27 +43,27 @@ const UpdateAllData = () => {
             )
             .then(({ data }) => data);
 
-    // const getDayDetails = async (year, month, day) =>
-    //     axios
-    //         .get(
-    //             `${
-    //                 process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
-    //             }?year=${year}&month=${month}&day=${day}`,
-    //         )
-    //         .then(({ data }) => data);
-    const getTodayPowerRealPACSum = async () =>
+    const getDayDetails = async (year, month, day) =>
         axios
             .get(
                 `${
-                    process.env.REACT_APP_API_BASE_URL +
-                    process.env.REACT_APP_GET_TODAY_POWER_REAL_PAC_SUM
-                }`,
+                    process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
+                }?year=${year}&month=${month}&day=${day}`,
             )
             .then(({ data }) => data);
+    // const getTodayPowerRealPACSum = async () =>
+    //     axios
+    //         .get(
+    //             `${
+    //                 process.env.REACT_APP_API_BASE_URL +
+    //                 process.env.REACT_APP_GET_TODAY_POWER_REAL_PAC_SUM
+    //             }`,
+    //         )
+    //         .then(({ data }) => data);
 
     useEffect(async () => {
-        // setDayDetails(await getDayDetails(2021, 8, 15));
-        setTodayPowerRealPACSum(await getTodayPowerRealPACSum());
+        setDayDetails(await getDayDetails(2021, 8, 21));
+        // setTodayPowerRealPACSum(await getTodayPowerRealPACSum());
         setCommonInverterData(await getInverterRealtimeDataCID());
         setPPPInverterData(await getInverterRealtimeData3PID());
         setMinMaxInverterData(await getMinMaxInverterData());
