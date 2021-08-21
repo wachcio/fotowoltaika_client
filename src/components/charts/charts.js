@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from 'react';
 import {
-    // Label,
+    Label,
     AreaChart,
     Area,
     XAxis,
@@ -27,7 +27,7 @@ dayjs.tz.setDefault('Europe/Warsaw');
 function Charts() {
     const { dayDetails, setDayDetails } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
-    const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
+    // const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
     const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', dayjs());
 
     const updateDay = async () => {
@@ -39,13 +39,13 @@ function Charts() {
                     {
                         name: 'PowerReal_PAC_Sum',
                         Produkcja: el.PowerReal_PAC_Sum,
-                        Timestamp: el.timestamp,
+                        timestamp: el.timestamp,
                     },
                 ]),
             );
-            setBiggestDayPAC(
-                dayDetails.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
-            );
+            // setBiggestDayPAC(
+            //     dayDetails.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
+            // );
         }
     };
 
@@ -72,7 +72,7 @@ function Charts() {
                     <p className="label">
                         {`${dayjs(payload[0].payload.timestamp).format('HH:mm')}`}
                     </p>
-                    <p className="label">{`Produkcja: ${payload[0].value}W`}</p>
+                    <p className="label">{`Produkcja: ${payload[0].value}Wh`}</p>
                 </div>
             );
         }
@@ -126,6 +126,7 @@ function Charts() {
                     }}
                 >
                     <CartesianGrid strokeDasharray="0 3 " />
+                    <Label value="Pages of my website" offset={0} position="insideTopRight" />
                     <XAxis
                         dataKey="data.timestamp"
                         label={{

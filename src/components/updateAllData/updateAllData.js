@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 import axios from 'axios';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
 
 export const getDayDetails = async (year, month, day) => {
@@ -25,7 +25,7 @@ const UpdateAllData = () => {
         setPPPInverterData,
         setStringsCurrentData,
         setMinMaxInverterData,
-        setDayDetails,
+        // setDayDetails,
         // setTodayPowerRealPACSum,
     } = useContext(StoreContext);
 
