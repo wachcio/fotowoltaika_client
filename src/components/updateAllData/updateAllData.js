@@ -2,6 +2,14 @@ import { useEffect, useContext } from 'react';
 import axios from 'axios';
 import { StoreContext } from '../../store/storeProvider';
 
+export const getDayDetails = async (year, month, day) =>
+    axios
+        .get(
+            `${
+                process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
+            }?year=${year}&month=${month}&day=${day}`,
+        )
+        .then(({ data }) => data);
 const UpdateAllData = () => {
     const {
         setCommonInverterData,
@@ -43,14 +51,6 @@ const UpdateAllData = () => {
             )
             .then(({ data }) => data);
 
-    const getDayDetails = async (year, month, day) =>
-        axios
-            .get(
-                `${
-                    process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
-                }?year=${year}&month=${month}&day=${day}`,
-            )
-            .then(({ data }) => data);
     // const getTodayPowerRealPACSum = async () =>
     //     axios
     //         .get(

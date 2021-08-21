@@ -15,13 +15,28 @@ import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
 import { useStateWithLabel } from '../../helpers/helpers';
+import { getDayDetails as updateDayDetails } from '../updateAllData/updateAllData';
+
+const duration = require('dayjs/plugin/duration');
+const timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(duration);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Europe/Warsaw');
 
 function Charts() {
-    const { dayDetails } = useContext(StoreContext);
+    const { dayDetails, setDayDetails } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
     const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
+    const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch');
 
     useEffect(async () => {
+        setDayToFetch(dayjs());
+    }, []);
+
+    useEffect(async () => {
+        // setDayToFetch(dayjs());
+
         if (dayDetails) {
             // const arr = [];
             setData([]);
@@ -57,9 +72,50 @@ function Charts() {
         return null;
     };
 
+    const handleClickChangeDay = async (e, days) => {
+        console.log('klik');
+
+        // e.preventDefault();
+        if (days > 0) {
+            console.log('dodawanie');
+            await setDayToFetch(dayjs(dayToFetch).add(dayjs.duration({ days: 1 })));
+        } else {
+            console.log('odejmowanie', dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
+            await setDayToFetch(dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
+        }
+        console.log(dayToFetch);
+        await setDayDetails(
+            await updateDayDetails(
+                dayjs(dayToFetch).year(),
+                dayjs(dayToFetch).month() + 1,
+                dayjs(dayToFetch).date(),
+            ),
+        );
+        console.log(dayToFetch);
+    };
+
     return (
         <>
-            <ResponsiveContainer width={800} height={500} className="styles.customTooltip">
+            <button
+                onClick={(e) => {
+                    handleClickChangeDay(e, -1);
+                }}
+                value="-1"
+                type="button"
+            >
+                Wczoraj
+            </button>{' '}
+            +++
+            <button
+                onClick={(e) => {
+                    handleClickChangeDay(e, 1);
+                }}
+                value="1"
+                type="button"
+            >
+                Jutro
+            </button>
+            <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
                 <AreaChart
                     data={data}
                     margin={{
