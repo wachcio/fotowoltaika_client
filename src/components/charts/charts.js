@@ -28,17 +28,10 @@ function Charts() {
     const { dayDetails, setDayDetails } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
     const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
-    const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch');
+    const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', dayjs());
 
-    useEffect(async () => {
-        setDayToFetch(dayjs());
-    }, []);
-
-    useEffect(async () => {
-        // setDayToFetch(dayjs());
-
+    const updateDay = async () => {
         if (dayDetails) {
-            // const arr = [];
             setData([]);
             await dayDetails.map(async (el) =>
                 setData((prev) => [
@@ -54,7 +47,22 @@ function Charts() {
                 dayDetails.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
             );
         }
+    };
+
+    useEffect(async () => {
+        await updateDay();
     }, [dayDetails]);
+
+    useEffect(async () => {
+        await setDayDetails(
+            await updateDayDetails(
+                dayjs(dayToFetch).year(),
+                dayjs(dayToFetch).month() + 1,
+                dayjs(dayToFetch).date(),
+            ),
+        );
+        // await updateDay();
+    }, [dayToFetch]);
 
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
@@ -75,23 +83,17 @@ function Charts() {
     const handleClickChangeDay = async (e, days) => {
         console.log('klik');
 
-        // e.preventDefault();
+        e.preventDefault();
         if (days > 0) {
             console.log('dodawanie');
             await setDayToFetch(dayjs(dayToFetch).add(dayjs.duration({ days: 1 })));
         } else {
             console.log('odejmowanie', dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
             await setDayToFetch(dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
+            console.log(await dayToFetch);
         }
-        console.log(dayToFetch);
-        await setDayDetails(
-            await updateDayDetails(
-                dayjs(dayToFetch).year(),
-                dayjs(dayToFetch).month() + 1,
-                dayjs(dayToFetch).date(),
-            ),
-        );
-        console.log(dayToFetch);
+
+        await console.log(dayToFetch);
     };
 
     return (
@@ -100,7 +102,6 @@ function Charts() {
                 onClick={(e) => {
                     handleClickChangeDay(e, -1);
                 }}
-                value="-1"
                 type="button"
             >
                 Wczoraj
@@ -110,7 +111,6 @@ function Charts() {
                 onClick={(e) => {
                     handleClickChangeDay(e, 1);
                 }}
-                value="1"
                 type="button"
             >
                 Jutro
@@ -137,7 +137,8 @@ function Charts() {
                             fill: '#666',
                         }}
                     />
-                    <YAxis domain={[0, Math.ceil(biggestDayPAC / 100) * 100 + 200]} />
+                    {/* <YAxis domain={[0, Math.ceil(biggestDayPAC / 100) * 100 + 200]} /> */}
+                    <YAxis domain={[0, 10000]} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Area

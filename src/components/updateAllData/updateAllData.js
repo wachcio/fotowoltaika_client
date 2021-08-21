@@ -1,15 +1,24 @@
 import { useEffect, useContext } from 'react';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
 
-export const getDayDetails = async (year, month, day) =>
-    axios
+export const getDayDetails = async (year, month, day) => {
+    console.log(
+        `${
+            process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
+        }?year=${year}&month=${month}&day=${day}`,
+    );
+
+    return axios
         .get(
             `${
                 process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
             }?year=${year}&month=${month}&day=${day}`,
         )
         .then(({ data }) => data);
+};
+
 const UpdateAllData = () => {
     const {
         setCommonInverterData,
@@ -62,7 +71,9 @@ const UpdateAllData = () => {
     //         .then(({ data }) => data);
 
     useEffect(async () => {
-        setDayDetails(await getDayDetails(2021, 8, 21));
+        // console.log(dayjs().year(), dayjs().month() + 1, dayjs().date());
+        // setDayDetails(await getDayDetails(dayjs().year(), dayjs().month() + 1, dayjs().date()));
+        // setDayDetails(await getDayDetails(2021, 8, 21));
         // setTodayPowerRealPACSum(await getTodayPowerRealPACSum());
         setCommonInverterData(await getInverterRealtimeDataCID());
         setPPPInverterData(await getInverterRealtimeData3PID());
