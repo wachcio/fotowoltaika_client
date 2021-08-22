@@ -39,6 +39,9 @@ function Charts() {
                     {
                         name: 'PowerReal_PAC_Sum',
                         Produkcja: el.PowerReal_PAC_Sum,
+                        EnergyReal_WAC_Sum_Produced: el.EnergyReal_WAC_Sum_Produced,
+                        EnergyReal_WAC_Sum_Produced_Until_Now:
+                            el.EnergyReal_WAC_Sum_Produced_Until_Now,
                         timestamp: el.timestamp,
                     },
                 ]),
@@ -72,7 +75,19 @@ function Charts() {
                     <p className="label">
                         {`${dayjs(payload[0].payload.timestamp).format('HH:mm')}`}
                     </p>
-                    <p className="label">{`Produkcja: ${payload[0].value}Wh`}</p>
+                    <p className="label">{`Produkcja: ${Number(payload[0].value).toFixed()}Wh`}</p>
+                    <p className="label">{`Produkcja w watach: ${Number(
+                        payload[0].payload.EnergyReal_WAC_Sum_Produced,
+                    ).toFixed()}W`}</p>
+                    <p className="label">{`Produkcja do teraz: ${
+                        payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now > 1000
+                            ? payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now / 1000
+                            : payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now
+                    }${
+                        payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now > 1000
+                            ? 'kWh'
+                            : 'Wh'
+                    }`}</p>
                 </div>
             );
         }
