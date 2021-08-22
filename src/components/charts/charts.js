@@ -75,7 +75,11 @@ function Charts() {
                     <p className="label">
                         {`${dayjs(payload[0].payload.timestamp).format('HH:mm')}`}
                     </p>
-                    <p className="label">{`Produkcja: ${Number(payload[0].value).toFixed()}Wh`}</p>
+                    <p className="label">{`Produkcja: ${
+                        Number(payload[0].value) > 1000
+                            ? Number(payload[0].value / 1000)
+                            : Number(payload[0].value)
+                    } ${Number(payload[0].value).toFixed() > 1000 ? 'kWh' : 'Wh'}`}</p>
                     <p className="label">{`Produkcja w watach: ${Number(
                         payload[0].payload.EnergyReal_WAC_Sum_Produced,
                     ).toFixed()}W`}</p>
