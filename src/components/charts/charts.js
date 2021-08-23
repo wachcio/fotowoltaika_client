@@ -27,8 +27,9 @@ dayjs.tz.setDefault('Europe/Warsaw');
 function Charts() {
     const { dayDetails, setDayDetails } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
-    // const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
+    const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
     const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', dayjs());
+    const [chartAutoScale, setChartAutoScale] = useStateWithLabel('chartAutoScale', false);
 
     const updateDay = async () => {
         if (dayDetails) {
@@ -46,9 +47,9 @@ function Charts() {
                     },
                 ]),
             );
-            // setBiggestDayPAC(
-            //     dayDetails.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
-            // );
+            setBiggestDayPAC(
+                dayDetails.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
+            );
         }
     };
 
@@ -77,16 +78,20 @@ function Charts() {
                     </p>
                     <p className="label">{`Produkcja: ${
                         Number(payload[0].value) > 1000
-                            ? Number(payload[0].value / 1000)
-                            : Number(payload[0].value)
+                            ? Number(payload[0].value / 1000).toFixed(2)
+                            : Number(payload[0].value).toFixed(2)
                     } ${Number(payload[0].value).toFixed() > 1000 ? 'kWh' : 'Wh'}`}</p>
                     <p className="label">{`Produkcja w watach: ${Number(
                         payload[0].payload.EnergyReal_WAC_Sum_Produced,
                     ).toFixed()}W`}</p>
                     <p className="label">{`Produkcja do teraz: ${
                         payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now > 1000
-                            ? payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now / 1000
-                            : payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now
+                            ? Number(
+                                  payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now / 1000,
+                              ).toFixed(2)
+                            : Number(
+                                  payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now,
+                              ).toFixed(2)
                     }${
                         payload[0].payload.EnergyReal_WAC_Sum_Produced_Until_Now > 1000
                             ? 'kWh'
@@ -100,19 +105,12 @@ function Charts() {
     };
 
     const handleClickChangeDay = async (e, days) => {
-        console.log('klik');
-
         e.preventDefault();
         if (days > 0) {
-            console.log('dodawanie');
             await setDayToFetch(dayjs(dayToFetch).add(dayjs.duration({ days: 1 })));
         } else {
-            console.log('odejmowanie', dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
             await setDayToFetch(dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
-            console.log(await dayToFetch);
         }
-
-        await console.log(dayToFetch);
     };
 
     return (
@@ -144,6 +142,7 @@ function Charts() {
                         left: 20,
                     }}
                 >
+                    <CustomTooltip />
                     <CartesianGrid strokeDasharray="0 3 " />
                     <Label value="Pages of my website" offset={0} position="insideTopRight" />
                     <XAxis
@@ -158,7 +157,12 @@ function Charts() {
                         }}
                     />
                     {/* <YAxis domain={[0, Math.ceil(biggestDayPAC / 100) * 100 + 200]} /> */}
-                    <YAxis domain={[0, 10000]} />
+                    <YAxis
+                        domain={[
+                            0,
+                            !chartAutoScale ? 10000 : Math.ceil(biggestDayPAC / 100) * 100 + 200,
+                        ]}
+                    />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Area

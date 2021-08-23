@@ -3,21 +3,14 @@ import axios from 'axios';
 // import dayjs from 'dayjs';
 import { StoreContext } from '../../store/storeProvider';
 
-export const getDayDetails = async (year, month, day) => {
-    console.log(
-        `${
-            process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
-        }?year=${year}&month=${month}&day=${day}`,
-    );
-
-    return axios
+export const getDayDetails = async (year, month, day) =>
+    axios
         .get(
             `${
                 process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_DAY_DETAILS
             }?year=${year}&month=${month}&day=${day}`,
         )
         .then(({ data }) => data);
-};
 
 const UpdateAllData = () => {
     const {
