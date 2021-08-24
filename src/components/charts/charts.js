@@ -12,8 +12,11 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 import dayjs from 'dayjs';
+import DatePicker from 'react-date-picker';
 import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
+import './Calendar.css';
+import './DatePicker.css';
 import { useStateWithLabel } from '../../helpers/helpers';
 import { getDayDetails as updateDayDetails } from '../updateAllData/updateAllData';
 
@@ -28,7 +31,7 @@ function Charts() {
     const { dayDetails, setDayDetails } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
     const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
-    const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', dayjs());
+    const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', new Date());
     const [chartAutoScale, setChartAutoScale] = useStateWithLabel('chartAutoScale', false);
 
     const updateDay = async () => {
@@ -177,9 +180,10 @@ function Charts() {
             <div className="flex flex-row">
                 <ChartAutoScaleButton />
             </div>
+
             <div className="flex flex-row">
                 <Arrow direction="left" />
-
+                <DatePicker onChange={(value) => setDayToFetch(value)} value={dayToFetch} />
                 <Arrow direction="right" />
                 {/* <ProductionInDay data="data" /> */}
             </div>

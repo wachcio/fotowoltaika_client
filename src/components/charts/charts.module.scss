@@ -4,8 +4,8 @@
     color: $first-color;
 }
 .arrow {
-    background-color: $basic-color;
-    color: $first-color;
+    background-color: $third-color;
+    color: $third-color;
 }
 input:checked ~ .dot {
     transform: translateX(100%);
