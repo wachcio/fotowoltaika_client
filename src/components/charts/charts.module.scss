@@ -3,3 +3,11 @@
     background-color: $basic-color;
     color: $first-color;
 }
+.arrow {
+    background-color: $basic-color;
+    color: $first-color;
+}
+input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: #48bb78;
+}

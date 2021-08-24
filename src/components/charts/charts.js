@@ -68,6 +68,45 @@ function Charts() {
         // await updateDay();
     }, [dayToFetch]);
 
+    const handleClickChangeDay = async (e, days) => {
+        e.preventDefault();
+        if (days > 0) {
+            await setDayToFetch(dayjs(dayToFetch).add(dayjs.duration({ days: 1 })));
+        } else {
+            await setDayToFetch(dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
+        }
+    };
+
+    const Arrow = ({ direction }) => (
+        <button
+            onClick={(e) => {
+                handleClickChangeDay(e, direction === 'right' ? 1 : -1);
+            }}
+            type="button"
+            className="uppercase p-3 m-2 flex items-center  max-w-max shadow-sm hover:shadow-lg rounded-full w-12 h-12"
+        >
+            <svg
+                width="64"
+                height="64"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 64 64"
+                style={{
+                    transform: `${direction === 'left' ? 'rotate(180deg)' : 'rotate(0deg)'}`,
+                }}
+            >
+                <g id="g6" transform="matrix(0.12500006,0,0,0.12109381,1.823203,1.4697608)">
+                    <g id="g4">
+                        <path
+                            d="M 394.8,222.851 186.065,14.116 c -18.821,-18.821 -51.328,-18.821 -68.438,0 -18.82,18.821 -18.82,49.617 0,68.438 L 290.433,257.07 117.628,429.875 c -18.82,18.821 -18.82,49.618 0,68.438 8.555,8.555 22.242,13.687 34.218,13.687 11.976,0 25.665,-5.132 34.219,-13.688 L 394.8,291.288 c 8.555,-8.555 13.688,-22.242 13.688,-34.219 0,-11.976 -5.133,-25.663 -13.688,-34.218 z M 370.847,267.335 163.823,474.36 c -5.133,5.132 -15.398,5.132 -20.531,0 -5.133,-5.132 -5.133,-15.399 0,-20.531 L 328.074,269.047 c 6.844,-6.844 6.844,-17.109 0,-23.953 L 141.581,60.312 c -5.133,-6.844 -5.133,-15.399 0,-20.531 3.422,-3.422 6.844,-5.132 10.266,-5.132 3.422,0 6.844,1.71 10.266,5.132 l 208.735,208.735 c 3.422,3.422 5.132,6.844 5.132,10.266 -1.711,1.709 -3.422,6.843 -5.133,8.553 z"
+                            id="path2"
+                            fill="#aaa"
+                        />
+                    </g>
+                </g>
+            </svg>
+        </button>
+    );
+
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             return (
@@ -104,34 +143,47 @@ function Charts() {
         return null;
     };
 
-    const handleClickChangeDay = async (e, days) => {
-        e.preventDefault();
-        if (days > 0) {
-            await setDayToFetch(dayjs(dayToFetch).add(dayjs.duration({ days: 1 })));
-        } else {
-            await setDayToFetch(dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
-        }
-    };
+    // const ProductionInDay = ({ data }) => ({
+    //     if(data) {
+    //         <p>{`${
+    //             Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now) > 1000
+    //                 ? Number(
+    //                       data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now / 1000,
+    //                   ).toFixed(2)
+    //                 : Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now).toFixed(2)
+    //         } ${
+    //             Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now).toFixed() > 1000
+    //                 ? 'kWh'
+    //                 : 'Wh'
+    //         }`}</p>;
+    //     },
+    // });
+
+    const ChartAutoScaleButton = () => (
+        <label htmlFor="toogleA" className="flex items-center cursor-pointer">
+            <div className="relative">
+                <input id="toogleA" type="checkbox" className="sr-only" />
+
+                <div className="w-10 h-4 bg-gray-400 rounded-full shadow-inner" />
+
+                <div className="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition" />
+            </div>
+            <div className="ml-3  font-medium">Toggle Me!</div>
+        </label>
+    );
 
     return (
         <>
-            <button
-                onClick={(e) => {
-                    handleClickChangeDay(e, -1);
-                }}
-                type="button"
-            >
-                Wczoraj
-            </button>{' '}
-            +++
-            <button
-                onClick={(e) => {
-                    handleClickChangeDay(e, 1);
-                }}
-                type="button"
-            >
-                Jutro
-            </button>
+            <div className="flex flex-row">
+                <ChartAutoScaleButton />
+            </div>
+            <div className="flex flex-row">
+                <Arrow direction="left" />
+
+                <Arrow direction="right" />
+                {/* <ProductionInDay data="data" /> */}
+            </div>
+
             <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
                 <AreaChart
                     data={data}
@@ -142,9 +194,8 @@ function Charts() {
                         left: 20,
                     }}
                 >
-                    <CustomTooltip />
                     <CartesianGrid strokeDasharray="0 3 " />
-                    <Label value="Pages of my website" offset={0} position="insideTopRight" />
+                    <Label value="Pages of my website" offset={0} position="insideTop" />
                     <XAxis
                         dataKey="data.timestamp"
                         label={{
@@ -156,7 +207,6 @@ function Charts() {
                             fill: '#666',
                         }}
                     />
-                    {/* <YAxis domain={[0, Math.ceil(biggestDayPAC / 100) * 100 + 200]} /> */}
                     <YAxis
                         domain={[
                             0,
@@ -164,7 +214,9 @@ function Charts() {
                         ]}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend />
+                    <Legend>
+                        <Arrow />
+                    </Legend>
                     <Area
                         type="monotone"
                         dataKey="Produkcja"
