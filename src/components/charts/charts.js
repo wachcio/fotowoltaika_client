@@ -9,7 +9,6 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
 } from 'recharts';
 import dayjs from 'dayjs';
@@ -76,9 +75,19 @@ function Charts() {
 
     const handleClickChangeDay = async (e, days) => {
         e.preventDefault();
+
         if (days > 0) {
+            if (dayjs(dayToFetch).add(dayjs.duration({ days: 1 })) > dayjs()) {
+                return;
+            }
             await setDayToFetch(dayjs(dayToFetch).add(dayjs.duration({ days: 1 })));
         } else {
+            if (
+                dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })) <
+                dayjs(new Date('2021-07-23'))
+            ) {
+                return;
+            }
             await setDayToFetch(dayjs(dayToFetch).subtract(dayjs.duration({ days: 1 })));
         }
     };
@@ -149,37 +158,54 @@ function Charts() {
         return null;
     };
 
-    // const ProductionInDay = ({ data }) => ({
-    //     if(data) {
-    //         <p>{`${
-    //             Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now) > 1000
-    //                 ? Number(
-    //                       data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now / 1000,
-    //                   ).toFixed(2)
-    //                 : Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now).toFixed(2)
-    //         } ${
-    //             Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now).toFixed() > 1000
-    //                 ? 'kWh'
-    //                 : 'Wh'
-    //         }`}</p>;
-    //     },
-    // });
+    const ProductionInDay = () => {
+        if (data.length) {
+            return (
+                <>
+                    <div className={styles.productionInDay}>
+                        <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
+                            Automatyczna skala wykresu
+                        </Switch>
+                        <p>{`${
+                            Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now) >
+                            1000
+                                ? Number(
+                                      data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now /
+                                          1000,
+                                  ).toFixed(2)
+                                : Number(
+                                      data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
+                                  ).toFixed(2)
+                        } ${
+                            Number(
+                                data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
+                            ).toFixed() > 1000
+                                ? 'kWh'
+                                : 'Wh'
+                        }`}</p>
+                    </div>
+                </>
+            );
+        }
+        return null;
+    };
 
     return (
         <>
-            <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
-                Automatyczna skala wykresu
-            </Switch>
             <div className="flex flex-row justify-center items-center">
                 <Arrow direction="left" />
                 <DatePicker
                     onChange={(value) => setDayToFetch(value)}
-                    value={dayToFetch}
+                    value={new Date(dayToFetch)}
                     clearIcon={null}
+                    locale="pl-PL"
+                    format="dd-MM-yyyy"
+                    minDate={new Date('2021-07-23')}
+                    maxDate={new Date()}
                 />
                 <Arrow direction="right" />
-                {/* <ProductionInDay data="data" /> */}
             </div>
+            <ProductionInDay />
             <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
                 <AreaChart
                     data={data}
@@ -210,9 +236,7 @@ function Charts() {
                         ]}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend>
-                        <Arrow />
-                    </Legend>
+
                     <Area
                         type="monotone"
                         dataKey="Produkcja"
