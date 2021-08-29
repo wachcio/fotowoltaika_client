@@ -71,6 +71,7 @@
 }
 .react-date-picker__button svg {
     display: inherit;
+    stroke: #fff;
 }
 .react-date-picker__calendar {
     width: 350px;

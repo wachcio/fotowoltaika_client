@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import dayjs from 'dayjs';
 import DatePicker from 'react-date-picker';
+import { Switch } from 'pretty-checkbox-react';
 import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
 import './Calendar.css';
@@ -86,7 +87,7 @@ function Charts() {
                 handleClickChangeDay(e, direction === 'right' ? 1 : -1);
             }}
             type="button"
-            className="uppercase p-3 m-2 flex items-center  max-w-max shadow-sm hover:shadow-lg rounded-full w-12 h-12"
+            className="uppercase p-2 m-2 flex items-center  max-w-max shadow-sm hover:stroke-current  w-12 h-12"
         >
             <svg
                 width="64"
@@ -162,32 +163,21 @@ function Charts() {
     //     },
     // });
 
-    const ChartAutoScaleButton = () => (
-        <label htmlFor="toogleA" className="flex items-center cursor-pointer">
-            <div className="relative">
-                <input id="toogleA" type="checkbox" className="sr-only" />
-
-                <div className="w-10 h-4 bg-gray-400 rounded-full shadow-inner" />
-
-                <div className="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition" />
-            </div>
-            <div className="ml-3  font-medium">Toggle Me!</div>
-        </label>
-    );
-
     return (
         <>
-            <div className="flex flex-row">
-                <ChartAutoScaleButton />
-            </div>
-
-            <div className="flex flex-row">
+            <Switch shape="fill" color="warning" type="checkbox">
+                Automatyczna skala wykresu
+            </Switch>
+            <div className="flex flex-row justify-center items-center">
                 <Arrow direction="left" />
-                <DatePicker onChange={(value) => setDayToFetch(value)} value={dayToFetch} />
+                <DatePicker
+                    onChange={(value) => setDayToFetch(value)}
+                    value={dayToFetch}
+                    clearIcon={null}
+                />
                 <Arrow direction="right" />
                 {/* <ProductionInDay data="data" /> */}
             </div>
-
             <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
                 <AreaChart
                     data={data}

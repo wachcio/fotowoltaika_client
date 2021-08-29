@@ -3,6 +3,9 @@ module.exports = {
     darkMode: false, // or 'media' or 'class'
     theme: {
         extend: {},
+        stroke: {
+            current: '#d9ab30',
+        },
     },
     variants: {
         extend: {},

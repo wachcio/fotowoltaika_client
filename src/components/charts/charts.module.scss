@@ -7,7 +7,7 @@
     background-color: $third-color;
     color: $third-color;
 }
-input:checked ~ .dot {
+.autoScale:checked ~ .dot {
     transform: translateX(100%);
     background-color: #48bb78;
 }
