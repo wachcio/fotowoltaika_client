@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from 'react';
 import {
@@ -13,7 +14,7 @@ import {
 } from 'recharts';
 import dayjs from 'dayjs';
 import DatePicker from 'react-date-picker';
-import { Switch } from 'pretty-checkbox-react';
+import { Switch, useCheckboxState } from 'pretty-checkbox-react';
 import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
 import './Calendar.css';
@@ -33,7 +34,8 @@ function Charts() {
     const [data, setData] = useStateWithLabel('data', []);
     const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
     const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', new Date());
-    const [chartAutoScale, setChartAutoScale] = useStateWithLabel('chartAutoScale', false);
+
+    const checkbox = useCheckboxState();
 
     const updateDay = async () => {
         if (dayDetails) {
@@ -165,7 +167,7 @@ function Charts() {
 
     return (
         <>
-            <Switch shape="fill" color="warning" type="checkbox">
+            <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
                 Automatyczna skala wykresu
             </Switch>
             <div className="flex flex-row justify-center items-center">
@@ -196,7 +198,7 @@ function Charts() {
                             value: dayDetails
                                 ? `${dayjs(dayDetails[0].timestamp).format('YYYY-MM-DD')}`
                                 : '',
-                            position: 'insideTopLeft',
+                            position: 'insideTopRight',
                             offset: 15,
                             fill: '#666',
                         }}
@@ -204,7 +206,7 @@ function Charts() {
                     <YAxis
                         domain={[
                             0,
-                            !chartAutoScale ? 10000 : Math.ceil(biggestDayPAC / 100) * 100 + 200,
+                            !checkbox.state ? 10000 : Math.ceil(biggestDayPAC / 100) * 100 + 200,
                         ]}
                     />
                     <Tooltip content={<CustomTooltip />} />
