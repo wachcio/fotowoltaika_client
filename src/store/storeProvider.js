@@ -9,8 +9,14 @@ import Message from '../components/message/message';
 export const StoreContext = createContext(null);
 
 const StoreProvider = (props) => {
-    // Load
+    // Router links
+    const routerLinks = [
+        { name: 'Start', path: '/', exact: true },
+        { name: 'Wykres dzienny', path: '/day' },
+        { name: 'Wartości maksymalne', path: '/max' },
+    ];
 
+    // Load
     const [loadData, setLoadData] = useStateWithLabel('loadData', null);
     const [takeLoad, setTakeLoad] = useStateWithLabel('takeLoad', false);
 
@@ -29,9 +35,6 @@ const StoreProvider = (props) => {
     const [isVisibleMessage, setIsVisibleMessage] = useStateWithLabel('isVisibleMessage', false);
     const [messageText, setMessageText] = useStateWithLabel('messageText', '');
     const [isMessageAlert, setIsMessageAlert] = useStateWithLabel('isMessageAlert', false);
-
-    // Router links
-    const routerLinks = [{ name: 'start', path: '/', exact: true }];
 
     // PV data
     const [commonInverterData, setCommonInverterData] = useStateWithLabel(

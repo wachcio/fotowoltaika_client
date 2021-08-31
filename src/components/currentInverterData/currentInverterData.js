@@ -1,8 +1,18 @@
 import { useContext } from 'react';
 import dayjs from 'dayjs';
+import fontawesome from '@fortawesome/fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faSun,
+    faWaveSquare,
+    faBolt,
+    faSyncAlt,
+    faThermometerHalf,
+} from '@fortawesome/free-solid-svg-icons';
 import { convertDataFromFroniusAPI } from '../../helpers/convertDataFromFroniusAPI';
 import { StoreContext } from '../../store/storeProvider';
 // import styles from './commonInverterData.module.scss'
+fontawesome.library.add(faSun, faWaveSquare, faBolt, faSyncAlt, faThermometerHalf);
 
 function CurrentInverterData() {
     const { commonInverterData } = useContext(StoreContext);
@@ -23,7 +33,7 @@ function CurrentInverterData() {
     );
     const currentProduction = convertDataFromFroniusAPI(
         commonInverterData?.Body?.Data?.PAC?.Value,
-        commonInverterData?.Body?.Data?.PAC?.Unit,
+        'W',
     );
 
     const currentFrequency = convertDataFromFroniusAPI(
@@ -32,12 +42,12 @@ function CurrentInverterData() {
     );
     const currentAmperageAC = convertDataFromFroniusAPI(
         commonInverterData?.Body?.Data?.IAC?.Value,
-        commonInverterData?.Body?.Data?.IAC?.Unit,
+        'A',
         2,
     );
     const currentVoltageAC = convertDataFromFroniusAPI(
         commonInverterData?.Body?.Data?.UAC?.Value,
-        commonInverterData?.Body?.Data?.UAC?.Unit,
+        'V',
         2,
     );
     const currentAmperageDC = convertDataFromFroniusAPI(
@@ -114,27 +124,65 @@ function CurrentInverterData() {
 
     return (
         <div className="currentInverterData">
-            <p>Produkcja aktualna: {currentProduction}</p>
-            <p>Produkcja dziś: {dayEnergyKWH}</p>
-            <p>Produkcja łącznie: {totalEnergyKWH}</p>
-            <p>Odczyty aktualne:</p>
-            <p>Częstotliwość: {currentFrequency}</p>
-            <p>Natężenie prądu zmiennego: {currentAmperageAC}</p>
-            <p>Natężenie prądu zmiennego L1: {currentAmperageACL1}</p>
-            <p>Natężenie prądu zmiennego L2: {currentAmperageACL2}</p>
-            <p>Natężenie prądu zmiennego L3: {currentAmperageACL3}</p>
-            <p>Napięcie prądu zmiennego: {currentVoltageAC}</p>
-            <p>Napięcie prądu zmiennego L1: {currentVoltageACL1}</p>
-            <p>Napięcie prądu zmiennego L2: {currentVoltageACL2}</p>
-            <p>Napięcie prądu zmiennego L3: {currentVoltageACL3}</p>
-            <p>Natężenie prądu stałego: {currentAmperageDC}</p>
-            <p>Natężenie prądu stałego string 1: {CurrentDCString1}</p>
-            <p>Natężenie prądu stałego string 2: {CurrentDCString2}</p>
-            <p>Napięcie prądu stałego: {currentVoltageDC}</p>
-            <p>Napięcie prądu stałego string 1: {VoltageDCString1}</p>
-            <p>Napięcie prądu stałego string 2: {VoltageDCString2}</p>
-            <p>Temperatura inwertera: {TemperaturePowerstage}</p>
-            <p>Aktualizacja: {timestampData}</p>
+            <div className="flex  items-center justify-start">
+                <FontAwesomeIcon icon={faSun} className="text-5xl mx-7" />
+                <div className=" flex flex-col">
+                    <p className="text-xl">Teraz: {currentProduction}</p>
+                    <p className="text-xl">Dziś: {dayEnergyKWH}</p>
+                    <p className="text-xl">Łącznie: {totalEnergyKWH}</p>
+                </div>
+            </div>
+            <div className="flex  items-center justify-start">
+                <FontAwesomeIcon icon={faWaveSquare} className="text-5xl mx-7" />
+                <div className=" flex flex-col">
+                    <p className="text-xl">{currentFrequency}</p>
+                </div>
+            </div>
+            <div className="flex  items-center justify-start">
+                <FontAwesomeIcon icon={faBolt} className="text-5xl mx-1" />
+                <p className="text-5xl mr-7">AC</p>
+                <div className=" flex flex-col">
+                    <p className="text-xl">
+                        {currentAmperageAC}, {currentVoltageAC}
+                    </p>
+                    <p className="text-xl">
+                        L1: {currentAmperageACL1}, {currentVoltageACL1}
+                    </p>
+                    <p className="text-xl">
+                        L2: {currentAmperageACL2}, {currentVoltageACL2}
+                    </p>
+                    <p className="text-xl">
+                        L3: {currentAmperageACL3}, {currentVoltageACL3}
+                    </p>
+                </div>
+            </div>
+            <div className="flex  items-center justify-start">
+                <FontAwesomeIcon icon={faBolt} className="text-5xl mx-1" />
+                <p className="text-5xl mr-7">DC</p>
+                <div className=" flex flex-col">
+                    <p className="text-xl">
+                        {currentAmperageDC}, {currentVoltageDC}
+                    </p>
+                    <p className="text-xl">
+                        MPP1: {CurrentDCString1}, {VoltageDCString1}
+                    </p>
+                    <p className="text-xl">
+                        MPP2: {CurrentDCString2}, {VoltageDCString2}
+                    </p>
+                </div>
+            </div>
+            <div className="flex  items-center justify-start">
+                <FontAwesomeIcon icon={faThermometerHalf} className="text-5xl mx-1" />
+                <div className=" flex flex-col">
+                    <p className="text-xl">Inwerter: {TemperaturePowerstage}</p>
+                </div>
+            </div>
+            <div className="flex  items-center justify-start">
+                <FontAwesomeIcon icon={faSyncAlt} className="text-3xl mx-1" />
+                <div className=" flex flex-col">
+                    <p className="text-xl">{timestampData}</p>
+                </div>
+            </div>
         </div>
     );
 }
