@@ -6,11 +6,11 @@ import styles from './nav.module.scss';
 function Nav() {
     const { routerLinks } = useContext(StoreContext);
     const menu = routerLinks.map((item) => (
-        <li key={item.name} className="space-x-5 text-xl px-2">
+        <li key={item.name} className="space-x-5 text-l px-2">
             <NavLink
                 to={item.path}
                 exact={item.exact ? item.exact : false}
-                className="hidden sm:inline-block text-white hover:text-yellow-400"
+                className=" text-white hover:text-yellow-400"
             >
                 {item.name}
             </NavLink>

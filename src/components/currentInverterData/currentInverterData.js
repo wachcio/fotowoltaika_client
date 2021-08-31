@@ -125,62 +125,62 @@ function CurrentInverterData() {
     return (
         <div className="currentInverterData">
             <div className="grid grid-cols-2 gap-2 justify-center">
-                <FontAwesomeIcon icon={faSun} className="text-5xl mx-4 justify-self-end" />
+                <FontAwesomeIcon icon={faSun} className="text-3xl mx-4 justify-self-end" />
                 <div className=" flex flex-col">
-                    <p className="text-xl">Teraz: {currentProduction}</p>
-                    <p className="text-xl">Dziś: {dayEnergyKWH}</p>
-                    <p className="text-xl">Łącznie: {totalEnergyKWH}</p>
+                    <p className="text-l">Teraz: {currentProduction}</p>
+                    <p className="text-l">Dziś: {dayEnergyKWH}</p>
+                    <p className="text-l">Łącznie: {totalEnergyKWH}</p>
                 </div>
 
-                <FontAwesomeIcon icon={faWaveSquare} className="text-5xl mx-4 justify-self-end" />
+                <FontAwesomeIcon icon={faWaveSquare} className="text-3xl mx-4 justify-self-end" />
                 <div className=" flex flex-col">
-                    <p className="text-xl">{currentFrequency}</p>
+                    <p className="text-l">{currentFrequency}</p>
                 </div>
                 <div className="flex mx-4 justify-self-end items-center">
-                    <FontAwesomeIcon icon={faBolt} className="text-5xl" />
-                    <p className="text-5xl">AC</p>
+                    <FontAwesomeIcon icon={faBolt} className="text-3xl" />
+                    <p className="text-3xl">AC</p>
                 </div>
                 <div className=" flex flex-col">
-                    <p className="text-xl">
+                    <p className="text-l">
                         {currentAmperageAC}, {currentVoltageAC}
                     </p>
-                    <p className="text-xl">
+                    <p className="text-l">
                         L1: {currentAmperageACL1}, {currentVoltageACL1}
                     </p>
-                    <p className="text-xl">
+                    <p className="text-l">
                         L2: {currentAmperageACL2}, {currentVoltageACL2}
                     </p>
-                    <p className="text-xl">
+                    <p className="text-l">
                         L3: {currentAmperageACL3}, {currentVoltageACL3}
                     </p>
                 </div>
                 <div className="flex mx-4 justify-self-end items-center">
-                    <FontAwesomeIcon icon={faBolt} className="text-5xl" />
-                    <p className="text-5xl">DC</p>
+                    <FontAwesomeIcon icon={faBolt} className="text-3xl" />
+                    <p className="text-3xl">DC</p>
                 </div>
                 <div className=" flex flex-col">
-                    <p className="text-xl">
+                    <p className="text-l">
                         {currentAmperageDC}, {currentVoltageDC}
                     </p>
-                    <p className="text-xl">
+                    <p className="text-l">
                         MPP1: {CurrentDCString1}, {VoltageDCString1}
                     </p>
-                    <p className="text-xl">
+                    <p className="text-l">
                         MPP2: {CurrentDCString2}, {VoltageDCString2}
                     </p>
                 </div>
 
                 <FontAwesomeIcon
                     icon={faThermometerHalf}
-                    className="text-5xl mx-4 justify-self-end"
+                    className="text-3xl mx-4 justify-self-end"
                 />
                 <div className="flex items-center">
-                    <p className="text-xl">Inwerter: {TemperaturePowerstage}</p>
+                    <p className="text-l">Inwerter: {TemperaturePowerstage}</p>
                 </div>
 
                 <FontAwesomeIcon icon={faSyncAlt} className="text-3xl mx-4 justify-self-end" />
                 <div className="flex items-center">
-                    <p className="text-xl">{timestampData}</p>
+                    <p className="text-l">{timestampData}</p>
                 </div>
             </div>
         </div>

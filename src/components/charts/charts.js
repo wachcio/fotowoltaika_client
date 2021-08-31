@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
     Label,
     AreaChart,
@@ -36,6 +37,8 @@ function Charts() {
     const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', new Date());
 
     const checkbox = useCheckboxState();
+
+    const location = useLocation();
 
     const updateDay = async () => {
         if (dayDetails) {
@@ -123,6 +126,22 @@ function Charts() {
         </button>
     );
 
+    const ChangeDate = () => (
+        <div className="flex flex-row justify-center items-center">
+            <Arrow direction="left" />
+            <DatePicker
+                onChange={(value) => setDayToFetch(value)}
+                value={new Date(dayToFetch)}
+                clearIcon={null}
+                locale="pl-PL"
+                format="dd-MM-yyyy"
+                minDate={new Date('2021-07-23')}
+                maxDate={new Date()}
+            />
+            <Arrow direction="right" />
+        </div>
+    );
+
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             return (
@@ -193,19 +212,8 @@ function Charts() {
 
     return (
         <>
-            <div className="flex flex-row justify-center items-center">
-                <Arrow direction="left" />
-                <DatePicker
-                    onChange={(value) => setDayToFetch(value)}
-                    value={new Date(dayToFetch)}
-                    clearIcon={null}
-                    locale="pl-PL"
-                    format="dd-MM-yyyy"
-                    minDate={new Date('2021-07-23')}
-                    maxDate={new Date()}
-                />
-                <Arrow direction="right" />
-            </div>
+            {location.pathname !== '/' ? <ChangeDate /> : null}
+
             <ProductionInDay />
             <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
                 <AreaChart
