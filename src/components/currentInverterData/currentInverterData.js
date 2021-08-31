@@ -124,23 +124,22 @@ function CurrentInverterData() {
 
     return (
         <div className="currentInverterData">
-            <div className="flex  items-center justify-start">
-                <FontAwesomeIcon icon={faSun} className="text-5xl mx-7" />
+            <div className="grid grid-cols-2 gap-2 justify-center">
+                <FontAwesomeIcon icon={faSun} className="text-5xl mx-4 justify-self-end" />
                 <div className=" flex flex-col">
                     <p className="text-xl">Teraz: {currentProduction}</p>
                     <p className="text-xl">Dziś: {dayEnergyKWH}</p>
                     <p className="text-xl">Łącznie: {totalEnergyKWH}</p>
                 </div>
-            </div>
-            <div className="flex  items-center justify-start">
-                <FontAwesomeIcon icon={faWaveSquare} className="text-5xl mx-7" />
+
+                <FontAwesomeIcon icon={faWaveSquare} className="text-5xl mx-4 justify-self-end" />
                 <div className=" flex flex-col">
                     <p className="text-xl">{currentFrequency}</p>
                 </div>
-            </div>
-            <div className="flex  items-center justify-start">
-                <FontAwesomeIcon icon={faBolt} className="text-5xl mx-1" />
-                <p className="text-5xl mr-7">AC</p>
+                <div className="flex mx-4 justify-self-end items-center">
+                    <FontAwesomeIcon icon={faBolt} className="text-5xl" />
+                    <p className="text-5xl">AC</p>
+                </div>
                 <div className=" flex flex-col">
                     <p className="text-xl">
                         {currentAmperageAC}, {currentVoltageAC}
@@ -155,10 +154,10 @@ function CurrentInverterData() {
                         L3: {currentAmperageACL3}, {currentVoltageACL3}
                     </p>
                 </div>
-            </div>
-            <div className="flex  items-center justify-start">
-                <FontAwesomeIcon icon={faBolt} className="text-5xl mx-1" />
-                <p className="text-5xl mr-7">DC</p>
+                <div className="flex mx-4 justify-self-end items-center">
+                    <FontAwesomeIcon icon={faBolt} className="text-5xl" />
+                    <p className="text-5xl">DC</p>
+                </div>
                 <div className=" flex flex-col">
                     <p className="text-xl">
                         {currentAmperageDC}, {currentVoltageDC}
@@ -170,16 +169,17 @@ function CurrentInverterData() {
                         MPP2: {CurrentDCString2}, {VoltageDCString2}
                     </p>
                 </div>
-            </div>
-            <div className="flex  items-center justify-start">
-                <FontAwesomeIcon icon={faThermometerHalf} className="text-5xl mx-1" />
-                <div className=" flex flex-col">
+
+                <FontAwesomeIcon
+                    icon={faThermometerHalf}
+                    className="text-5xl mx-4 justify-self-end"
+                />
+                <div className="flex items-center">
                     <p className="text-xl">Inwerter: {TemperaturePowerstage}</p>
                 </div>
-            </div>
-            <div className="flex  items-center justify-start">
-                <FontAwesomeIcon icon={faSyncAlt} className="text-3xl mx-1" />
-                <div className=" flex flex-col">
+
+                <FontAwesomeIcon icon={faSyncAlt} className="text-3xl mx-4 justify-self-end" />
+                <div className="flex items-center">
                     <p className="text-xl">{timestampData}</p>
                 </div>
             </div>
