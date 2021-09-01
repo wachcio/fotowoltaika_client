@@ -38,7 +38,7 @@ function CurrentInverterData() {
 
     const currentFrequency = convertDataFromFroniusAPI(
         commonInverterData?.Body?.Data?.FAC?.Value,
-        commonInverterData?.Body?.Data?.FAC?.Unit,
+        'Hz',
     );
     const currentAmperageAC = convertDataFromFroniusAPI(
         commonInverterData?.Body?.Data?.IAC?.Value,
@@ -67,32 +67,32 @@ function CurrentInverterData() {
 
     const currentVoltageACL1 = convertDataFromFroniusAPI(
         PPPInverterData?.Body?.Data?.UAC_L1?.Value,
-        PPPInverterData?.Body?.Data?.UAC_L1?.Unit,
+        'V',
         2,
     );
     const currentVoltageACL2 = convertDataFromFroniusAPI(
         PPPInverterData?.Body?.Data?.UAC_L2?.Value,
-        PPPInverterData?.Body?.Data?.UAC_L2?.Unit,
+        'V',
         2,
     );
     const currentVoltageACL3 = convertDataFromFroniusAPI(
         PPPInverterData?.Body?.Data?.UAC_L3?.Value,
-        PPPInverterData?.Body?.Data?.UAC_L3?.Unit,
+        'V',
         2,
     );
     const currentAmperageACL1 = convertDataFromFroniusAPI(
         PPPInverterData?.Body?.Data?.IAC_L1?.Value,
-        PPPInverterData?.Body?.Data?.IAC_L1?.Unit,
+        'A',
         2,
     );
     const currentAmperageACL2 = convertDataFromFroniusAPI(
         PPPInverterData?.Body?.Data?.IAC_L2?.Value,
-        PPPInverterData?.Body?.Data?.IAC_L2?.Unit,
+        'A',
         2,
     );
     const currentAmperageACL3 = convertDataFromFroniusAPI(
         PPPInverterData?.Body?.Data?.IAC_L3?.Value,
-        PPPInverterData?.Body?.Data?.IAC_L3?.Unit,
+        'A',
         2,
     );
     const CurrentDCString1 =
@@ -124,7 +124,7 @@ function CurrentInverterData() {
 
     return (
         <div className="currentInverterData">
-            <div className="grid grid-cols-2 gap-2 justify-center">
+            <div className="grid grid-cols-2 gap-2 justify-center items-center">
                 <FontAwesomeIcon icon={faSun} className="text-3xl mx-4 justify-self-end" />
                 <div className=" flex flex-col">
                     <p className="text-l">Teraz: {currentProduction}</p>
