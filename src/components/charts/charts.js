@@ -3,7 +3,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
-    Label,
     AreaChart,
     Area,
     XAxis,
@@ -21,6 +20,7 @@ import './Calendar.css';
 import './DatePicker.css';
 import { useStateWithLabel } from '../../helpers/helpers';
 import { getDayDetails as updateDayDetails } from '../updateAllData/updateAllData';
+import { convertDataFromFroniusAPI } from '../../helpers/convertDataFromFroniusAPI';
 // import Arrow from './arrow';
 
 const duration = require('dayjs/plugin/duration');
@@ -35,6 +35,8 @@ function Charts() {
     const [data, setData] = useStateWithLabel('data', []);
     const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
     const [dayToFetch, setDayToFetch] = useStateWithLabel('dayToFetch', new Date());
+
+    const { commonInverterData } = useContext(StoreContext);
 
     const checkbox = useCheckboxState();
 
@@ -179,30 +181,35 @@ function Charts() {
     };
 
     const ProductionInDay = () => {
+        if (!data.length) return null;
+        const productionValue =
+            location.pathname !== '/'
+                ? `${
+                      Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now) > 1000
+                          ? Number(
+                                data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now / 1000,
+                            ).toFixed(2)
+                          : Number(
+                                data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
+                            ).toFixed(2)
+                  } ${
+                      Number(
+                          data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
+                      ).toFixed() > 1000
+                          ? 'kWh'
+                          : 'Wh'
+                  }`
+                : convertDataFromFroniusAPI(
+                      commonInverterData?.Body?.Data?.DAY_ENERGY?.Value,
+                      commonInverterData?.Body?.Data?.DAY_ENERGY?.Unit,
+                      2,
+                      true,
+                  );
         if (data.length) {
             return (
                 <>
                     <div className={styles.productionInDay}>
-                        <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
-                            Automatyczna skala wykresu
-                        </Switch>
-                        <p>{`${
-                            Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now) >
-                            1000
-                                ? Number(
-                                      data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now /
-                                          1000,
-                                  ).toFixed(2)
-                                : Number(
-                                      data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
-                                  ).toFixed(2)
-                        } ${
-                            Number(
-                                data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
-                            ).toFixed() > 1000
-                                ? 'kWh'
-                                : 'Wh'
-                        }`}</p>
+                        <p>{productionValue}</p>
                     </div>
                 </>
             );
@@ -226,7 +233,6 @@ function Charts() {
                     }}
                 >
                     <CartesianGrid strokeDasharray="0 3 " />
-                    <Label value="Pages of my website" offset={0} position="insideTop" />
                     <XAxis
                         dataKey="data.timestamp"
                         label={{
@@ -235,7 +241,7 @@ function Charts() {
                                 : '',
                             position: 'insideTopRight',
                             offset: 15,
-                            fill: '#666',
+                            fill: '#fff',
                         }}
                     />
                     <YAxis
@@ -243,6 +249,7 @@ function Charts() {
                             0,
                             !checkbox.state ? 10000 : Math.ceil(biggestDayPAC / 100) * 100 + 200,
                         ]}
+                        stroke="#fff"
                     />
                     <Tooltip content={<CustomTooltip />} />
 
@@ -255,6 +262,9 @@ function Charts() {
                     />
                 </AreaChart>
             </ResponsiveContainer>
+            <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
+                Automatyczna skala wykresu
+            </Switch>
         </>
     );
 }
