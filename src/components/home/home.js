@@ -1,11 +1,11 @@
 import CurrentInverterData from '../currentInverterData/currentInverterData';
-import Charts from '../charts/charts';
+import ChartsDay from '../charts/chartsDay';
 
 function Home() {
     return (
         <>
             <CurrentInverterData />
-            <Charts />
+            <ChartsDay />
         </>
     );
 }
