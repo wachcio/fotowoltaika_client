@@ -13,6 +13,7 @@ const StoreProvider = (props) => {
     const routerLinks = [
         { name: 'Start', path: '/', exact: true },
         { name: 'Wykres dzienny', path: '/day' },
+        { name: 'Wykres miesięczny', path: '/month' },
         { name: 'Wartości maksymalne', path: '/max' },
     ];
 
@@ -55,6 +56,7 @@ const StoreProvider = (props) => {
     //     'todayPowerRealPACSum',
     //     null,
     // );
+    const [monthProduction, setMonthProduction] = useStateWithLabel('monthDetails', null);
 
     const showMessage = (text, isAlert) => {
         setMessageText(text);
@@ -91,6 +93,8 @@ const StoreProvider = (props) => {
                 setDayDetails,
                 // todayPowerRealPACSum,
                 // setTodayPowerRealPACSum,
+                monthProduction,
+                setMonthProduction,
             }}
         >
             {isVisibleMessage ? <Message message={messageText} alert={isMessageAlert} /> : ''}
