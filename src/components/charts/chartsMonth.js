@@ -62,7 +62,6 @@ function MonthProduction() {
                     const arr = [];
                     // eslint-disable-next-line no-plusplus
                     for (let i = monthProduction[0].Day - 1; i > 0; i--) {
-                        console.log(i);
                         arr.unshift({
                             Day: i,
                             Production: 0,
@@ -215,13 +214,13 @@ function MonthProduction() {
                 >
                     <CartesianGrid strokeDasharray="0 3 " />
                     <XAxis
-                        dataKey="data.timestamp"
+                        dataKey="Day"
                         label={{
                             value: monthProduction
                                 ? `${dayjs(monthToFetch).format('MMMM YYYY')}`
                                 : '',
                             position: 'insideTopRight',
-                            offset: 15,
+                            offset: 30,
                             fill: '#fff',
                         }}
                     />
