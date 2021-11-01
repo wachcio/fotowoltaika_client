@@ -2,17 +2,16 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import DatePicker from 'react-date-picker';
-import { Switch, useCheckboxState } from 'pretty-checkbox-react';
 import { StoreContext } from '../../store/storeProvider';
 import styles from './charts.module.scss';
 import './Calendar.css';
 import './DatePicker.css';
 import { useStateWithLabel } from '../../helpers/helpers';
 import { getMonthProduction } from '../updateAllData/updateAllData';
-import { convertDataFromFroniusAPI } from '../../helpers/convertDataFromFroniusAPI';
+import { daysInMonth } from '../../helpers/daysInMonth';
 // import Arrow from './arrow';
 
 const duration = require('dayjs/plugin/duration');
@@ -25,12 +24,8 @@ dayjs.tz.setDefault('Europe/Warsaw');
 function MonthProduction() {
     const { monthProduction, setMonthProduction } = useContext(StoreContext);
     const [data, setData] = useStateWithLabel('data', []);
-    const [biggestDayPAC, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
+    const [, setBiggestDayPAC] = useStateWithLabel('biggestDayPAC', 0);
     const [monthToFetch, setMonthToFetch] = useStateWithLabel('monthToFetch', new Date());
-
-    const { commonInverterData } = useContext(StoreContext);
-
-    const checkbox = useCheckboxState();
 
     const location = useLocation();
 
@@ -46,9 +41,44 @@ function MonthProduction() {
                     },
                 ]),
             );
+
+            if (monthProduction.length < daysInMonth(monthToFetch)) {
+                if (monthProduction[0].Day === 1) {
+                    // eslint-disable-next-line no-plusplus
+                    for (let i = monthProduction.length + 1; i <= daysInMonth(monthToFetch); i++) {
+                        setData((prev) => [
+                            ...prev,
+                            {
+                                Day: i,
+                                Production: 0,
+                            },
+                        ]);
+                    }
+                }
+                if (monthProduction[0].Day > 1) {
+                    const arr = [];
+                    // eslint-disable-next-line no-plusplus
+                    for (let i = monthProduction[0].Day - 1; i > 0; i--) {
+                        console.log(i);
+                        arr.unshift({
+                            Day: i,
+                            Production: 0,
+                        });
+                    }
+                    setData((prev) => [...arr, ...prev]);
+                }
+            }
+
             setBiggestDayPAC(
                 monthProduction.reduce((a, v) => Math.max(a, v.Production), -Infinity),
             );
+        } else {
+            setData([
+                {
+                    Day: 1,
+                    Production: 0,
+                },
+            ]);
         }
     };
 
