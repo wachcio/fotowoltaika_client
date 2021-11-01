@@ -2,15 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import DatePicker from 'react-date-picker';
 import { Switch, useCheckboxState } from 'pretty-checkbox-react';
@@ -50,13 +42,13 @@ function MonthProduction() {
                     ...prev,
                     {
                         Day: el.Day,
-                        Produkcja: el.Production,
+                        Production: el.Production,
                     },
                 ]),
             );
-            // setBiggestDayPAC(
-            //     monthProduction.reduce((a, v) => Math.max(a, v.PowerReal_PAC_Sum), -Infinity),
-            // );
+            setBiggestDayPAC(
+                monthProduction.reduce((a, v) => Math.max(a, v.Production), -Infinity),
+            );
         }
     };
 
@@ -158,50 +150,27 @@ function MonthProduction() {
         return null;
     };
 
-    const ProductionInDay = () => {
+    const ProductionInMonth = () => {
         if (!data.length) return null;
-        const productionValue =
-            location.pathname !== '/'
-                ? `${
-                      Number(data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now) > 1000
-                          ? Number(
-                                data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now / 1000,
-                            ).toFixed(2)
-                          : Number(
-                                data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
-                            ).toFixed(2)
-                  } ${
-                      Number(
-                          data[data.length - 1].EnergyReal_WAC_Sum_Produced_Until_Now,
-                      ).toFixed() > 1000
-                          ? 'kWh'
-                          : 'Wh'
-                  }`
-                : convertDataFromFroniusAPI(
-                      commonInverterData?.Body?.Data?.DAY_ENERGY?.Value,
-                      commonInverterData?.Body?.Data?.DAY_ENERGY?.Unit,
-                      2,
-                      true,
-                  );
-        if (data.length) {
-            return (
-                <>
-                    <div className={styles.productionInDay}>
-                        <p>{productionValue}</p>
-                    </div>
-                </>
-            );
-        }
-        return null;
+
+        const production = Number(data.reduce((a, v) => a + v.Production, 0) / 1000).toFixed(2);
+
+        return (
+            <>
+                <div className={styles.productionInDay}>
+                    <p>{`${production}kWh`}</p>
+                </div>
+            </>
+        );
     };
 
     return (
         <>
             {location.pathname !== '/' ? <ChangeDate /> : null}
 
-            {/* <ProductionInDay /> */}
+            <ProductionInMonth />
             <ResponsiveContainer width="100%" height={500} className="styles.customTooltip">
-                <AreaChart
+                <BarChart
                     data={data}
                     margin={{
                         top: 20,
@@ -222,27 +191,21 @@ function MonthProduction() {
                             fill: '#fff',
                         }}
                     /> */}
-                    <YAxis
-                        domain={[
-                            0,
-                            !checkbox.state ? 10000 : Math.ceil(biggestDayPAC / 100) * 100 + 200,
-                        ]}
-                        stroke="#fff"
-                    />
-                    <Tooltip content={<CustomTooltip />} />
+                    <YAxis domain={[0, 80]} stroke="#fff" />
 
-                    <Area
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar
                         type="monotone"
-                        dataKey="Produkcja"
+                        dataKey="Production"
                         stroke="#ffd238"
                         fill="#ffd238"
                         fillOpacity={1}
                     />
-                </AreaChart>
+                </BarChart>
             </ResponsiveContainer>
-            <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
+            {/* <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
                 Automatyczna skala wykresu
-            </Switch>
+            </Switch> */}
         </>
     );
 }
