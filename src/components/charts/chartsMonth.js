@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BarChart, Bar, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, XAxis, Bar, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import DatePicker from 'react-date-picker';
 import { StoreContext } from '../../store/storeProvider';
@@ -17,9 +17,12 @@ import { daysInMonth } from '../../helpers/daysInMonth';
 const duration = require('dayjs/plugin/duration');
 const timezone = require('dayjs/plugin/timezone');
 
+require('dayjs/locale/pl');
+
 dayjs.extend(duration);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Warsaw');
+dayjs.locale('pl');
 
 function MonthProduction() {
     const { monthProduction, setMonthProduction } = useContext(StoreContext);
@@ -211,17 +214,17 @@ function MonthProduction() {
                     }}
                 >
                     <CartesianGrid strokeDasharray="0 3 " />
-                    {/* <XAxis
+                    <XAxis
                         dataKey="data.timestamp"
                         label={{
                             value: monthProduction
-                                ? `${dayjs(monthProduction[0].timestamp).format('YYYY-MM')}`
+                                ? `${dayjs(monthToFetch).format('MMMM YYYY')}`
                                 : '',
                             position: 'insideTopRight',
                             offset: 15,
                             fill: '#fff',
                         }}
-                    /> */}
+                    />
                     <YAxis domain={[0, 80]} stroke="#fff" />
 
                     <Tooltip content={<CustomTooltip />} />
@@ -234,9 +237,6 @@ function MonthProduction() {
                     />
                 </BarChart>
             </ResponsiveContainer>
-            {/* <Switch shape="fill" color="warning" type="checkbox" {...checkbox}>
-                Automatyczna skala wykresu
-            </Switch> */}
         </>
     );
 }
