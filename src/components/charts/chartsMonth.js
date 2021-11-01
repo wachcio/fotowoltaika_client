@@ -42,7 +42,7 @@ function MonthProduction() {
                     ...prev,
                     {
                         Day: el.Day,
-                        Production: el.Production,
+                        Production: el.Production / 1000,
                     },
                 ]),
             );
@@ -154,7 +154,7 @@ function MonthProduction() {
     const ProductionInMonth = () => {
         if (!data.length) return null;
 
-        const production = Number(data.reduce((a, v) => a + v.Production, 0) / 1000).toFixed(2);
+        const production = Number(data.reduce((a, v) => a + v.Production, 0)).toFixed(2);
 
         return (
             <>
