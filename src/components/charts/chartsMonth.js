@@ -127,6 +127,7 @@ function MonthProduction() {
                 format="MM-yyyy"
                 minDate={new Date('2021-07-23')}
                 maxDate={new Date()}
+                calendarIcon={null}
             />
             <Arrow direction="right" />
         </div>
