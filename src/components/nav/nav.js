@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { StoreContext } from '../../store/storeProvider';
-import styles from './nav.module.scss';
+// import styles from './nav.module.scss';
 
 function Nav() {
     const { routerLinks } = useContext(StoreContext);

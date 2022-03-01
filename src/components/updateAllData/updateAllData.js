@@ -73,22 +73,22 @@ const UpdateAllData = () => {
     //         .then(({ data }) => data);
 
     useEffect(async () => {
-        // console.log(dayjs().year(), dayjs().month() + 1, dayjs().date());
-        // setDayDetails(await getDayDetails(dayjs().year(), dayjs().month() + 1, dayjs().date()));
-        // setDayDetails(await getDayDetails(2021, 8, 21));
-        // setTodayPowerRealPACSum(await getTodayPowerRealPACSum());
         setCommonInverterData(await getInverterRealtimeDataCID());
         setPPPInverterData(await getInverterRealtimeData3PID());
         setMinMaxInverterData(await getMinMaxInverterData());
         setStringsCurrentData(await getStringsCurrentData());
-
-        // return setInterval(async () => {
-        //     setCommonInverterData(await getInverterRealtimeDataCID());
-        //     setPPPInverterData(await getInverterRealtimeData3PID());
-        //     setMinMaxInverterData(await getMinMaxInverterData());
-        //     setStringsCurrentData(await getStringsCurrentData());
-        // }, process.env.REACT_APP_UPDATE_DATA_TIME || 30000);
     }, []);
+
+    // useEffect(
+    //     async () =>
+    //         Promise.any([
+    //             setCommonInverterData(getInverterRealtimeDataCID()),
+    //             setPPPInverterData(getInverterRealtimeData3PID()),
+    //             setMinMaxInverterData(getMinMaxInverterData()),
+    //             setStringsCurrentData(getStringsCurrentData()),
+    //         ]),
+    //     [],
+    // );
     return null;
 };
 export default UpdateAllData;

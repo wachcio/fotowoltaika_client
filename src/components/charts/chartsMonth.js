@@ -103,18 +103,19 @@ function MonthProduction() {
         e.preventDefault();
 
         if (month > 0) {
-            if (dayjs(monthToFetch).add(dayjs.duration({ month: 1 })) > dayjs()) {
+            if (dayjs(monthToFetch).add(1, 'month').startOf('day') > dayjs()) {
                 return;
             }
-            await setMonthToFetch(dayjs(monthToFetch).add(dayjs.duration({ month: 1 })));
+            await setMonthToFetch(dayjs(monthToFetch).add(1, 'month').endOf('day'));
         } else {
             if (
-                dayjs(monthToFetch).subtract(dayjs.duration({ month: 1 })) <
+                dayjs(monthToFetch).subtract(1, 'month').add(5, 'hours') <
                 dayjs(new Date('2021-07-01'))
             ) {
                 return;
             }
-            await setMonthToFetch(dayjs(monthToFetch).subtract(dayjs.duration({ month: 1 })));
+
+            await setMonthToFetch(dayjs(monthToFetch).subtract(1, 'month').startOf('month'));
         }
     };
 
@@ -175,7 +176,7 @@ function MonthProduction() {
                         Number(payload[0].value) > 1000
                             ? Number(payload[0].value / 1000).toFixed(2)
                             : Number(payload[0].value).toFixed(2)
-                    } ${Number(payload[0].value).toFixed() > 1000 ? 'kWh' : 'Wh'}`}</p>
+                    } ${Number(payload[0].value) > 1000 ? 'kWh' : 'kWh'}`}</p>
                 </div>
             );
         }
